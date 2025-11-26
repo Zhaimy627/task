@@ -1,0 +1,48 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.9.0/contracts/token/ERC721/ERC721.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.9.0/contracts/access/Ownable.sol";
+
+/**
+ * @title MyNFT - 简单的 ERC721 NFT 合约
+ */
+contract MyNFT is ERC721, Ownable {
+    // 当前 tokenId 编号
+    uint256 private _nextTokenId = 1;
+
+    // 构造函数：设置名称和符号
+   constructor() ERC721("MyAwesomeNFT", "MAN") Ownable() {}
+
+    /**
+     * @notice 铸造 NFT
+     * @param recipient 接收者地址
+     * @param tokenURI 元数据链接（如 ipfs://Qm...）
+     * @return tokenId 新铸造的 NFT 编号
+     */
+    function mintNFT(address recipient, string memory tokenURI) public returns (uint256) {
+        uint256 tokenId = _nextTokenId++;
+        _safeMint(recipient, tokenId);
+        _setTokenURI(tokenId, tokenURI);
+        return tokenId;
+    }
+
+    // 存储每个 tokenId 对应的 URI
+    mapping(uint256 => string) private _tokenURIs;
+
+    /**
+     * @dev 覆盖父类方法，返回自定义 Token URI
+     */
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
+        return _tokenURIs[tokenId];
+    }
+
+    /**
+     * @dev 设置 token 的元数据链接
+     */
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal {
+        require(_exists(tokenId), "ERC721: URI set of nonexistent token");
+        _tokenURIs[tokenId] = _tokenURI;    
+    }
+}

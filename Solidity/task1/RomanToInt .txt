@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract RomanToInt {
+    
+    /**
+     * @dev 将罗马数字转换为整数
+     * @param s 罗马数字字符串，如 "MCMXCIV"
+     * @return 对应的整数，如 1994
+     */
+    function romanToInt(string memory s) public pure returns (uint256) {
+        // 罗马字符到数值的映射
+        mapping(string => uint256) private romanMap;
+        romanMap["I"] = 1;
+        romanMap["V"] = 5;
+        romanMap["X"] = 10;
+        romanMap["L"] = 50;
+        romanMap["C"] = 100;
+        romanMap["D"] = 500;
+        romanMap["M"] = 1000;
+        
+        bytes memory str = bytes(s);
+        uint256 len = str.length;
+        uint256 result = 0;
+        uint256 prev = 0;
+        
+        // 从右往左遍历
+        for (uint256 i = len; i > 0; i--) {
+            uint256 current = romanMap[string(abi.encodePacked(str[i-1]))];
+            
+            // 如果当前值 < 前面值，说明是减法（如 IV）
+            if (current < prev) {
+                result -= current;
+            } else {
+                result += current;
+            }
+            prev = current;
+        }
+        
+        return result;
+    }
+}
