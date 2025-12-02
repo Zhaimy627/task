@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract StringReverser {
+    
+    /**
+     * @dev 反转字符串
+     * @param str 输入字符串，如 "abcde"
+     * @return 反转后的字符串，如 "edcba"
+     */
+    function reverseString(string memory str) public pure returns (string memory) {
+        // 将 string 转为 bytes
+        bytes memory strBytes = bytes(str);
+        uint256 len = strBytes.length;
+        
+        // 如果为空，直接返回
+        if (len == 0) {
+            return str;
+        }
+        
+        // 创建新 bytes 数组
+        bytes memory reversed = new bytes(len);
+        
+        // 从后往前填充
+        for (uint256 i = 0; i < len; i++) {
+            reversed[i] = strBytes[len - 1 - i];
+        }
+        
+        // 转回 string 返回
+        return string(reversed);
+    }
+}

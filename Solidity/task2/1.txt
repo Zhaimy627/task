@@ -1,0 +1,75 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+/**
+ * @title MyToken - 简单 ERC20 代币
+ */
+contract MyToken {
+    string public name = "MyToken";
+    string public symbol = "MTK";
+    uint8 public decimals = 18;
+    uint256 public totalSupply;
+
+    // 余额映射：地址 → 余额
+    mapping(address => uint256) public balanceOf;
+
+    // 授权额度：owner → spender → 可用金额
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    // 所有者（部署者）
+    address public owner;
+
+    // Transfer 和 Approval 事件
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    // 构造函数：铸造初始代币给部署者
+    constructor(uint256 initialSupply) {
+        totalSupply = initialSupply * 10 ** decimals;
+        balanceOf[msg.sender] = totalSupply;
+        owner = msg.sender;
+
+        emit Transfer(address(0), msg.sender, totalSupply);
+    }
+
+    // 转账：从自己账户转出
+    function transfer(address to, uint256 value) public returns (bool) {
+        require(balanceOf[msg.sender] >= value, "Insufficient balance");
+        balanceOf[msg.sender] -= value;
+        balanceOf[to] += value;
+        emit Transfer(msg.sender, to, value);
+        return true;
+    }
+
+    // 授权：允许别人花你的代币
+    function approve(address spender, uint256 value) public returns (bool) {
+        allowance[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
+
+    // 代扣转账：被授权人从别人账户转出
+    function transferFrom(
+        address from,
+        address to,
+        uint256 value
+    ) public returns (bool) {
+        require(allowance[from][msg.sender] >= value, "Allowance exceeded");
+        require(balanceOf[from] >= value, "Insufficient balance");
+
+        balanceOf[from] -= value;
+        balanceOf[to] += value;
+        allowance[from][msg.sender] -= value;
+
+        emit Transfer(from, to, value);
+        return true;
+    }
+
+    // 铸币：仅所有者可以增发
+    function mint(uint256 amount) public {
+        require(msg.sender == owner, "Only owner can mint");
+        totalSupply += amount * 10 ** decimals;
+        balanceOf[msg.sender] += amount * 10 ** decimals;
+        emit Transfer(address(0), msg.sender, amount * 10 ** decimals);
+    }
+}

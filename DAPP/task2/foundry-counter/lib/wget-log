@@ -1,0 +1,28 @@
+--2025-11-25 17:57:00--  https://github.com/foundry-rs/forge-std/archive/refs/heads/master.zip
+Resolving github.com (github.com)... 20.205.243.166
+Connecting to github.com (github.com)|20.205.243.166|:443... connected.
+HTTP request sent, awaiting response... Read error (Connection reset by peer) in headers.
+Retrying.
+
+--2025-11-25 18:04:25--  (try: 2)  https://github.com/foundry-rs/forge-std/archive/refs/heads/master.zip
+Connecting to github.com (github.com)|20.205.243.166|:443... connected.
+HTTP request sent, awaiting response... No data received.
+Retrying.
+
+--2025-11-25 18:04:32--  (try: 3)  https://github.com/foundry-rs/forge-std/archive/refs/heads/master.zip
+Connecting to github.com (github.com)|20.205.243.166|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/foundry-rs/forge-std/zip/refs/heads/master [following]
+--2025-11-25 18:04:32--  https://codeload.github.com/foundry-rs/forge-std/zip/refs/heads/master
+Resolving codeload.github.com (codeload.github.com)... 20.205.243.165
+Connecting to codeload.github.com (codeload.github.com)|20.205.243.165|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/zip]
+Saving to: ‘forge-std.zip’
+
+     0K .......... .......... .......... .......... ..........  126K
+    50K .......... .......... .......... .......... .......... 92.4K
+   100K .......... .......... .......... .......                127K=1.2s
+
+2025-11-25 18:04:34 (111 KB/s) - ‘forge-std.zip’ saved [141001]
+

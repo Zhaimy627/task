@@ -1,0 +1,40 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract IntToRoman {
+    
+    /**
+     * @dev 将整数转换为罗马数字
+     * @param num 整数 (1 <= num <= 3999)
+     * @return 罗马数字字符串
+     */
+    function intToRoman(uint256 num) public pure returns (string memory) {
+        // 罗马数字表：值 -> 符号
+        uint256[13] memory values = [
+            1000, 900, 500, 400,
+            100,   90,  50,  40,
+            10,     9,   5,   4,
+            1
+        ];
+        string[13] memory symbols = [
+            "M", "CM", "D", "CD",
+            "C", "XC", "L", "XL",
+            "X", "IX", "V", "IV",
+            "I"
+        ];
+        
+        string memory result = "";
+        uint256 i = 0;
+        
+        while (num > 0) {
+            // 找到最大的可减值
+            while (num >= values[i]) {
+                result = string(abi.encodePacked(result, symbols[i]));
+                num -= values[i];
+            }
+            i++;
+        }
+        
+        return result;
+    }
+}
